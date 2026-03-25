@@ -1,0 +1,183 @@
+# Systems Index: Seed Money (시드머니)
+
+> **Status**: Draft
+> **Created**: 2026-03-25
+> **Last Updated**: 2026-03-25
+> **Source Concept**: design/gdd/game-concept.md
+
+---
+
+## Overview
+
+시드머니는 실시간 투자 시뮬레이션으로, 시장 시뮬레이션 엔진을 중심으로 매매, 분석,
+성장, 경쟁 시스템이 유기적으로 연결된 구조다. 코어 루프는 "뉴스/차트 읽기 → 매매
+판단 → 결과 확인"이며, 이를 감싸는 시즌 대회와 스킬 트리가 장기 프로그레션을 제공한다.
+
+게임 필라 "판단이 곧 실력"에 따라 모든 시스템은 플레이어의 분석과 판단을 중심으로
+설계되며, "읽는 재미" 필라에 따라 정보 접근성이 UI 설계의 최우선 원칙이다.
+
+총 21개 시스템, 11개 MVP, 6개 Vertical Slice, 2개 Alpha, 2개 Full Vision.
+
+---
+
+## Systems Enumeration
+
+| # | System Name | Category | Priority | Status | Design Doc | Depends On |
+|---|-------------|----------|----------|--------|------------|------------|
+| 1 | 게임 시계 (Game Clock) | Core | MVP | Approved | [game-clock.md](game-clock.md) | — |
+| 2 | 종목 데이터베이스 (Stock Database) | Core | MVP | Approved | [stock-database.md](stock-database.md) | — |
+| 3 | 가격 엔진 (Price Engine) | Gameplay | MVP | Approved | [price-engine.md](price-engine.md) | 게임 시계, 종목 DB |
+| 4 | 뉴스/이벤트 시스템 (News & Events) | Gameplay | MVP | Not Started | — | 게임 시계, 종목 DB |
+| 5 | 주문 처리 엔진 (Order Engine) | Gameplay | MVP | Not Started | — | 종목 DB, 재화 시스템 |
+| 6 | 포트폴리오 관리 (Portfolio Manager) | Gameplay | MVP | Not Started | — | 종목 DB, 재화 시스템 |
+| 7 | AI 경쟁자 시스템 (AI Competitors) | Gameplay | V-Slice | Not Started | — | 가격 엔진, 주문 엔진, 포트폴리오 |
+| 8 | 스킬 트리 시스템 (Skill Tree) | Progression | V-Slice | Not Started | — | 경험치 시스템 |
+| 9 | 경험치 시스템 (XP System) | Progression | V-Slice | Not Started | — | 주문 엔진, 포트폴리오 |
+| 10 | 시즌/대회 관리 (Season Manager) | Progression | V-Slice | Not Started | — | 가격 엔진, 포트폴리오, AI 경쟁자, 재화 |
+| 11 | 재화 시스템 (Currency System) | Economy | MVP | Approved | [currency-system.md](currency-system.md) | — |
+| 12 | 트레이딩 스크린 (Main HUD) | UI | MVP | Not Started | — | 가격 엔진, 주문 엔진, 포트폴리오 |
+| 13 | 차트 렌더러 (Chart Renderer) | UI | MVP | Not Started | — | 가격 엔진 |
+| 14 | 뉴스 피드 UI (News Feed UI) | UI | MVP | Not Started | — | 뉴스/이벤트 시스템 |
+| 15 | 포트폴리오 UI (Portfolio UI) | UI | MVP | Not Started | — | 포트폴리오 관리 |
+| 16 | 리더보드 UI (Leaderboard UI) | UI | V-Slice | Not Started | — | 시즌/대회 관리 |
+| 17 | 스킬 트리 UI (Skill Tree UI) | UI | V-Slice | Not Started | — | 스킬 트리 시스템 |
+| 18 | 세이브/로드 (Save/Load) | Persistence | Alpha | Not Started | — | 포트폴리오, 스킬 트리, 시즌, 경험치 |
+| 19 | 오디오 시스템 (Audio) | Audio | Alpha | Not Started | — | 주문 엔진, 뉴스 시스템 |
+| 20 | 튜토리얼 (Tutorial) | Meta | Full | Not Started | — | 전체 게임플레이 시스템 |
+| 21 | 설정 (Settings) | Meta | Full | Not Started | — | — |
+
+---
+
+## Categories
+
+| Category | Description | Systems |
+|----------|-------------|---------|
+| **Core** | 모든 시스템이 의존하는 기반 시스템 | 게임 시계, 종목 DB |
+| **Gameplay** | 게임을 재미있게 만드는 핵심 메카닉 | 가격 엔진, 뉴스/이벤트, 주문 엔진, 포트폴리오, AI 경쟁자 |
+| **Progression** | 플레이어의 장기 성장 | 스킬 트리, 경험치, 시즌/대회 |
+| **Economy** | 재화 생성과 소비 | 재화 시스템 |
+| **UI** | 정보 표시와 플레이어 인터페이스 | 트레이딩 스크린, 차트, 뉴스 UI, 포트폴리오 UI, 리더보드 UI, 스킬 트리 UI |
+| **Persistence** | 게임 상태 저장 | 세이브/로드 |
+| **Audio** | 사운드와 음악 | 오디오 시스템 |
+| **Meta** | 코어 루프 밖의 시스템 | 튜토리얼, 설정 |
+
+---
+
+## Priority Tiers
+
+| Tier | Definition | Target Milestone | Systems Count |
+|------|------------|------------------|---------------|
+| **MVP** | 코어 루프 검증에 필수. "뉴스/차트 읽고 매매하는 게 재미있는가?" | 첫 플레이 가능 빌드 | 11 |
+| **Vertical Slice** | 시즌 대회 + 성장 루프의 완전한 체험 | 완성된 데모 | 6 |
+| **Alpha** | 세이브/로드, 오디오 등 전체 기능 | 알파 마일스톤 | 2 |
+| **Full Vision** | 튜토리얼, 설정 등 폴리시 | 베타 / 릴리스 | 2 |
+
+---
+
+## Dependency Map
+
+### Foundation Layer (no dependencies)
+
+1. **게임 시계** — 거래일/주/시즌의 시간 흐름을 제어. 실시간 시뮬레이션의 기반
+2. **종목 데이터베이스** — 가상 종목의 정의 (이름, 섹터, 기본가치, 특성). 모든 게임플레이의 데이터 원천
+3. **재화 시스템** — 예수금/모의투자 시드 관리. 매매와 보상의 기반
+
+### Core Layer (depends on Foundation)
+
+1. **가격 엔진** — depends on: 게임 시계, 종목 DB. 가격 변동 알고리즘의 심장
+2. **뉴스/이벤트 시스템** — depends on: 게임 시계, 종목 DB. 시장 이벤트 생성 및 가격 엔진에 입력
+3. **주문 처리 엔진** — depends on: 종목 DB, 재화 시스템. 매수/매도 주문 접수 및 체결
+4. **포트폴리오 관리** — depends on: 종목 DB, 재화 시스템. 보유 종목 추적 및 손익 계산. BasePortfolio(공통) + SimPortfolio(모의투자) / RealPortfolio(현물 시장, 향후 확장) 구조
+
+### Feature Layer (depends on Core)
+
+1. **AI 경쟁자 시스템** — depends on: 가격 엔진, 주문 엔진, 포트폴리오. AI 트레이더 매매 행동
+2. **경험치 시스템** — depends on: 주문 엔진, 포트폴리오. 거래/수익률 기반 XP 산출
+3. **스킬 트리 시스템** — depends on: 경험치 시스템. 스킬 해금 로직 및 효과 적용
+4. **시즌/대회 관리** — depends on: 가격 엔진, 포트폴리오, AI 경쟁자, 재화. 시즌 수명주기
+
+### Presentation Layer (depends on Features)
+
+1. **트레이딩 스크린** — depends on: 가격 엔진, 주문 엔진, 포트폴리오. 메인 화면 레이아웃
+2. **차트 렌더러** — depends on: 가격 엔진. 캔들차트/거래량/지표 시각화
+3. **뉴스 피드 UI** — depends on: 뉴스/이벤트 시스템. 뉴스 표시 및 알림
+4. **포트폴리오 UI** — depends on: 포트폴리오 관리. 보유 종목/손익 표시
+5. **리더보드 UI** — depends on: 시즌/대회 관리. 순위 표시
+6. **스킬 트리 UI** — depends on: 스킬 트리 시스템. 스킬 트리 시각화
+
+### Polish Layer (depends on everything)
+
+1. **세이브/로드** — depends on: 포트폴리오, 스킬 트리, 시즌, 경험치. 전체 상태 직렬화
+2. **오디오** — depends on: 주문 엔진, 뉴스 시스템. 이벤트 기반 사운드
+3. **튜토리얼** — depends on: 전체 게임플레이 시스템. 플레이어 안내
+4. **설정** — 독립적. 게임 옵션 관리
+
+---
+
+## Recommended Design Order
+
+| Order | System | Priority | Layer | Est. Effort |
+|-------|--------|----------|-------|-------------|
+| 1 | 게임 시계 (Game Clock) | MVP | Foundation | S |
+| 2 | 종목 데이터베이스 (Stock Database) | MVP | Foundation | S |
+| 3 | 재화 시스템 (Currency System) | MVP | Foundation | S |
+| 4 | 가격 엔진 (Price Engine) | MVP | Core | L |
+| 5 | 뉴스/이벤트 시스템 (News & Events) | MVP | Core | M |
+| 6 | 주문 처리 엔진 (Order Engine) | MVP | Core | M |
+| 7 | 포트폴리오 관리 (Portfolio Manager) | MVP | Core | M |
+| 8 | 트레이딩 스크린 (Main HUD) | MVP | Presentation | M |
+| 9 | 차트 렌더러 (Chart Renderer) | MVP | Presentation | M |
+| 10 | 뉴스 피드 UI (News Feed UI) | MVP | Presentation | S |
+| 11 | 포트폴리오 UI (Portfolio UI) | MVP | Presentation | S |
+| 12 | AI 경쟁자 시스템 (AI Competitors) | V-Slice | Feature | M |
+| 13 | 경험치 시스템 (XP System) | V-Slice | Feature | S |
+| 14 | 스킬 트리 시스템 (Skill Tree) | V-Slice | Feature | M |
+| 15 | 시즌/대회 관리 (Season Manager) | V-Slice | Feature | M |
+| 16 | 리더보드 UI (Leaderboard UI) | V-Slice | Presentation | S |
+| 17 | 스킬 트리 UI (Skill Tree UI) | V-Slice | Presentation | S |
+| 18 | 세이브/로드 (Save/Load) | Alpha | Persistence | M |
+| 19 | 오디오 시스템 (Audio) | Alpha | Audio | S |
+| 20 | 튜토리얼 (Tutorial) | Full | Meta | M |
+| 21 | 설정 (Settings) | Full | Meta | S |
+
+> **Effort**: S = 1 세션, M = 2-3 세션, L = 4+ 세션
+
+---
+
+## Circular Dependencies
+
+- **없음**. 뉴스/이벤트 → 가격 엔진은 단방향 이벤트 입력으로 설계.
+
+---
+
+## High-Risk Systems
+
+| System | Risk Type | Risk Description | Mitigation |
+|--------|-----------|-----------------|------------|
+| 가격 엔진 | Design + Technical | 게임 전체 재미를 좌우. "패턴 있되 예측불가"한 균형점 설계가 가장 어려운 과제. 너무 랜덤하면 도박, 너무 패턴화되면 퍼즐이 됨 | 프로토타입으로 반복 검증 (`/prototype price-engine`). 복수 알고리즘 A/B 테스트 |
+| 차트 렌더러 | Technical | 실시간 캔들차트 + 거래량을 웹에서 부드럽게 렌더링. Godot 웹 export의 UI 성능 미검증 | 기술 프로토타입으로 웹 성능 확인. 대안: Canvas 2D 직접 그리기 |
+| 트레이딩 스크린 | Design | 차트/호가창/뉴스/포트폴리오를 한 화면에 깔끔하게 배치하는 UX. 정보 과부하 vs 접근성 균형 | UX 와이어프레임 먼저 설계. 실제 증권 HTS 레이아웃 참고 |
+
+---
+
+## Progress Tracker
+
+| Metric | Count |
+|--------|-------|
+| Total systems identified | 21 |
+| Design docs started | 4 |
+| Design docs reviewed | 4 |
+| Design docs approved | 4 |
+| MVP systems designed | 4/11 |
+| Vertical Slice systems designed | 0/6 |
+
+---
+
+## Next Steps
+
+- [ ] Design MVP-tier systems first (use `/design-system [system-name]`)
+- [ ] Start with Foundation: 게임 시계 → 종목 DB → 재화 시스템
+- [ ] Then Core (highest risk first): 가격 엔진 → 뉴스/이벤트 → 주문 엔진 → 포트폴리오
+- [ ] Prototype the price engine early (`/prototype price-engine`)
+- [ ] Run `/design-review` on each completed GDD
+- [ ] Run `/gate-check pre-production` when MVP systems are designed
